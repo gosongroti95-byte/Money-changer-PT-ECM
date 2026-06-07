@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PT ECM Money Changer - Authorized Currency Exchange</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* --- TEMA PREMIUM (Hitam, Emas, Biru sesuai Logo ECM) --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #0b0f17;
+            color: #ffffff;
+            padding-bottom: 50px;
+        }
+
+        header {
+            background-color: #000000;
+            border-bottom: 2px solid #c5a021;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* LOGO ECM VIA CSS */
+        .logo-ecm {
+            width: 55px;
+            height: 55px;
+            background: #000;
+            border: 2px solid #c5a021;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .logo-arrows { display: flex; gap: 4px; }
+        .arrow-up { color: #2e5bff; font-size: 14px; }
+        .arrow-down { color: #888888; font-size: 14px; }
+        .dollar-circle {
+            position: absolute; background: #c5a021; color: #000;
+            border-radius: 50%; width: 14px; height: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 9px; top: 13px;
+        }
+        .logo-text { color: #fff; font-weight: 900; font-size: 11px; letter-spacing: 1px; margin-top: 2px; }
+
+        .brand-text h1 { font-size: 18px; color: #fff; letter-spacing: 1px; }
+        .brand-text p { font-size: 11px; color: #c5a021; font-weight: bold; }
+
+        .hero {
+            padding: 40px 5%;
+            text-align: center;
+            background: radial-gradient(circle at top, #1e293b 0%, #0b0f17 70%);
+        }
+
+        .bi-badge {
+            background: #000;
+            border: 1.5px solid #c5a021;
+            padding: 8px 16px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+        .bi-badge i { color: #c5a021; }
+
+        .hero h2 { font-size: 32px; margin-bottom: 10px; }
+        .hero h2 span { color: #c5a021; }
+        .hero p { color: #94a3b8; font-size: 15px; max-width: 600px; margin: 0 auto; }
+
+        .main-container {
+            padding: 20px 5%;
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 850px) {
+            .main-container { grid-template-columns: 1fr; }
+        }
+
+        .box {
+            background-color: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        .box-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #c5a021;
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 12px; color: #94a3b8; border-bottom: 2px solid #1f2937; font-size: 14px; }
+        td { padding: 14px 12px; border-bottom: 1px solid #1f2937; font-size: 16px; }
+        .currency-code { font-weight: bold; color: #2e5bff; }
+
+        /* Kalkulator */
+        .calc-group { margin-bottom: 15px; }
+        .calc-group label { display: block; margin-bottom: 8px; color: #94a3b8; font-size: 14px; }
+        .calc-input-wrapper { display: flex; }
+        .calc-input-wrapper select, .calc-input-wrapper input {
+            background-color: #1f2937; border: 1px solid #374151; color: white; padding: 12px; font-size: 16px;
+        }
+        .calc-input-wrapper select { border-top-left-radius: 8px; border-bottom-left-radius: 8px; width: 90px; }
+        .calc-input-wrapper input { border-top-right-radius: 8px; border-bottom-right-radius: 8px; flex-grow: 1; }
+
+        .result-box {
+            background-color: #0b0f17; border: 1px dashed #c5a021; padding: 15px; border-radius: 8px; text-align: center; margin-top: 20px;
+        }
+        .result-box p { color: #94a3b8; font-size: 13px; }
+        .result-box h3 { font-size: 22px; color: #c5a021; margin-top: 5px; }
+
+        .btn-whatsapp {
+            display: block; width: 100%; background-color: #25d366; color: white; text-align: center;
+            padding: 14px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px;
+            transition: 0.3s;
+        }
+        .btn-whatsapp:hover { background-color: #1ebd58; }
+
+        /* PANEL ADMIN RAHASIA UNTUK UPDATE RATE VIA HP */
+        .admin-panel {
+            margin: 40px 5% 0;
+            background: #000;
+            border: 1px solid #374151;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .admin-title {
+            font-size: 14px; color: #6b7280; margin-bottom: 15px; display: flex; justify-content: space-between; cursor: pointer;
+            user-select: none;
+        }
+        .admin-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; display: none;
+        }
+        @media (max-width: 600px) { .admin-grid { grid-template-columns: 1fr; } }
+        .admin-input-group { background: #111827; padding: 10px; border-radius: 8px; border: 1px solid #1f2937; }
+        .admin-input-group h4 { color: #c5a021; font-size: 14px; margin-bottom: 8px; }
+        .admin-input-group label { display: block; font-size: 11px; color: #94a3b8; margin-top: 5px; }
+        .admin-input-group input {
+            width: 100%; background: #1f2937; border: 1px solid #374151; color: #fff; padding: 6px; border-radius: 4px; font-size: 14px;
+        }
+        
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #4b5563;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <div class="logo-ecm">
+                <div class="logo-arrows">
+                    <i class="fa-solid fa-arrow-up arrow-up"></i>
+                    <i class="fa-solid fa-arrow-down arrow-down"></i>
+                </div>
+                <div class="dollar-circle">$</div>
+                <div class="logo-text">ECM</div>
+            </div>
+            <div class="brand-text">
+                <h1>PT ECM MONEY CHANGER</h1>
+                <p>Authorized Money Changer</p>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="bi-badge">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>Berizin & Diawasi Oleh Bank Indonesia</span>
+        </div>
+        <h2>Kurs Transparan, Transaksi <span>Aman</span></h2>
+        <p>Nilai tukar mata uang asing bersaing dan jaminan keamanan legalitas resmi.</p>
+    </section>
+
+    <div class="main-container">
+        <div class="box">
+            <div class="box-title">
+                <i class="fa-solid fa-money-bill-trend-up"></i>
+                <h3>Kurs Hari Ini</h3>
+            </div>
+            <table>
+                <thead>
+                    <tr><th>Mata Uang</th><th>Beli (IDR)</th><th>Jual (IDR)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><span class="currency-code">USD</span> - US Dollar</td><td id="t-usd-beli">16.120</td><td id="t-usd-jual">16.250</td></tr>
+                    <tr><td><span class="currency-code">AUD</span> - Australian Dollar</td><td id="t-aud-beli">10.650</td><td id="t-aud-jual">10.780</td></tr>
+                    <tr><td><span class="currency-code">EUR</span> - Euro</td><td id="t-eur-beli">17.350</td><td id="t-eur-jual">17.480</td></tr>
+                    <tr><td><span class="currency-code">GBP</span> - British Pound</td><td id="t-gbp-beli">20.450</td><td id="t-gbp-jual">20.650</td></tr>
+                    <tr><td><span class="currency-code">MYR</span> - Malaysian Ringgit</td><td id="t-myr-beli">3.410</td><td id="t-myr-jual">3.480</td></tr>
+                    <tr><td><span class="currency-code">SGD</span> - Singapore Dollar</td><td id="t-sgd-beli">11.950</td><td id="t-sgd-jual">12.050</td></tr>
+                    <tr><td><span class="currency-code">CNY</span> - Chinese Yuan</td><td id="t-cny-beli">2.220</td><td id="t-cny-jual">2.280</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="box">
+            <div class="box-title">
+                <i class="fa-solid fa-calculator"></i>
+                <h3>Kalkulator Penukaran</h3>
+            </div>
+            <div class="calc-group">
+                <label>Mata Uang</label>
+                <div class="calc-input-wrapper">
+                    <select id="calc-currency">
+                        <option value="USD">USD</option>
+                        <option value="AUD">AUD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="GBP">GBP</option>
+                        <option value="MYR">MYR</option>
+                        <option value="SGD">SGD</option>
+                        <option value="CNY">CNY</option>
+                    </select>
+                    <input type="number" id="calc-amount" value="100">
+                </div>
+            </div>
+            <div class="result-box">
+                <p>Estimasi Rupiah Yang Anda Terima (Beli)</p>
+                <h3 id="calc-result">Rp 1.612.000</h3>
+            </div>
+            <a id="wa-btn" href="https://wa.me/6282313837891?text=Halo%20PT%20ECM%20Money%20Changer,%20saya%20ingin%20konfirmasi%20penukaran%20valas." class="btn-whatsapp" target="_blank">
+                <i class="fa-brands fa-whatsapp"></i> Hubungi WhatsApp Toko
+            </a>
+        </div>
+    </div>
+
+    <div class="admin-panel">
+        <div class="admin-title" onclick="toggleAdmin()">
+            <span>[+] Panel Kontrol Kurs ECM (Khusus Pemilik)</span>
+            <span style="font-size:11px;">Klik untuk buka/tutup</span>
+        </div>
+        <div class="admin-grid" id="admin-box">
+            <div class="admin-input-group">
+                <h4>USD</h4>
+                <label>Kurs Beli</label><input type="number" id="i-usd-beli" value="16120" oninput="updateSistem()">
+                <label>Kurs Jual</label><input type="number" id="i-usd-jual" value="16250" oninput="updateSistem()">
+            </div>
+            <div class="admin-input-group">
+                <h4>AUD</h4>
+                <label>Kurs Beli</label><input type="number" id="i-aud-beli" value="10650" oninput="updateSistem()">
+                <label>Kurs Jual</label><input type="number" id="i-aud-jual" value="10780" oninput="updateSistem()">
+            </div>
+            <div class="admin-input-group">
+                <h4>EUR</h4>
+                <label>Kurs Beli</label><input type="number" id="i-eur-beli" value="17350" oninput="updateSistem()">
+                <label>Kurs Jual</label><input type="number" id="i-eur-jual" value="17480" oninput="updateSistem()">
+            </div>
+            <div class="admin-input-group">
+                <h4>GBP</h4>
+                <label>Kurs Beli</label><input type="number" id="i-gbp-beli" value="20450" oninput="updateSistem()">
+                <label>Kurs Jual</label><input type="number" id="i-gbp-jual" value="20650" oninput="updateSistem()">
+            </div>
+            <div class="admin-input-group">
+                <h4>MYR</h4>
+                <label>Kurs Beli</label><input type="number" id="i-myr-beli" value="3410" oninput="updateSistem()">
+                <label>Kurs Jual</label><input type="number" id="i-myr-jual" value="3480" oninput="updateSistem()">
+            </div>
+            <div class="admin-input-group">
+                <h4>SGD</h4>
+                <label>Kurs Beli</label><input type="number" id="i-sgd-beli" value="11950" oninput="updateSistem()">
+                <label>Kurs Jual</label><input type="number" id="i-sgd-jual" value="12050" oninput="updateSistem()">
+            </div>
+            <div class="admin-input-group">
+                <h4>CNY</h4>
+                <label>Kurs Beli</label><input type="number" id="i-cny-beli" value="2220" oninput="updateSistem()">
+                <label>Kurs Jual</label><input type="number" id="i-cny-jual" value="2280" oninput="updateSistem()">
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 PT ECM Money Changer. Authorized Money Changer Bank Indonesia.</p>
+    </footer>
+
+    <script>
+        // Memuat rate dari penyimpanan internal browser HP jika sudah ada
+        window.onload = function() {
+            const savedRates = localStorage.getItem('ecm_rates');
+            if (savedRates) {
+                const data = JSON.parse(savedRates);
+                for (let curr in data) {
+                    if(document.getElementById(`i-${curr}-beli`)) {
+                        document.getElementById(`i-${curr}-beli`).value = data[curr].beli;
+                        document.getElementById(`i-${curr}-jual`).value = data[curr].jual;
+                    }
+                }
+            }
+            updateSistem(false);
+        }
+
+        function toggleAdmin() {
+            var box = document.getElementById('admin-box');
+            box.style.display = (box.style.display === 'grid') ? 'none' : 'grid';
+        }
+
+        function updateSistem(shouldSave = true) {
+            const rates = ['usd', 'aud', 'eur', 'gbp', 'myr', 'sgd', 'cny'];
+            let data = {};
+            
+            rates.forEach(curr => {
+                data[curr] = {
+                    beli: parseFloat(document.getElementById(`i-${curr}-beli`).value) || 0,
+                    jual: parseFloat(document.getElementById(`i-${curr}-jual`).value) || 0
+                };
+                document.getElementById(`t-${curr}-beli`).innerText = data[curr].beli.toLocaleString('id-ID');
+                document.getElementById(`t-${curr}-jual`).innerText = data[curr].jual.toLocaleString('id-ID');
+            });
+
+            // Menyimpan otomatis di browser HP biar data ga hilang
+            if (shouldSave) {
+                localStorage.setItem('ecm_rates', JSON.stringify(data));
+            }
+
+            const pilihan = document.getElementById('calc-currency').value.toLowerCase();
+            const jumlah = parseFloat(document.getElementById('calc-amount').value) || 0;
+            const total = data[pilihan].beli * jumlah;
+
+            document.getElementById('calc-result').innerText = 'Rp ' + total.toLocaleString('id-ID');
+            
+            // Logika pesan WhatsApp otomatis pintar
+            const waBtn = document.getElementById('wa-btn');
+            const pesan = `Halo PT ECM Money Changer, saya mau konfirmasi tukar ${jumlah} ${pilihan.toUpperCase()} ke Rupiah dengan estimasi Rp ${total.toLocaleString('id-ID')}.`;
+            waBtn.href = `https://wa.me/6282313837891?text=${encodeURIComponent(pesan)}`;
+        }
+
+        document.getElementById('calc-currency').addEventListener('change', () => updateSistem(false));
+        document.getElementById('calc-amount').addEventListener('input', () => updateSistem(false));
+    </script>
+</body>
+</html>
